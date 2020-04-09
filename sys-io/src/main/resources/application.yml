@@ -1,0 +1,78 @@
+spring:
+
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    enabled: true
+    main:
+      allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/my?useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true
+    username: root
+    password: 123456
+    hikari:
+      minimum-idle: 5
+      idle-timeout: 600000
+      maximum-pool-size: 10
+      auto-commit: true
+      pool-name: MyHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+  jackson:
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  redis:    # 默认密码为空
+    host: 127.0.0.1
+    port: 6379    # Redis 连接服务器端口
+    jedis:
+      pool:
+        max-active: 20    # 连接池最大连接数 (使用负数表示没有限制)
+        max-idle: 10    # 连接池的最小空闲连接
+        max-wait: 100000    # 连接池最大阻塞等待时间 (使用负数表示没有限制)
+    timeout: 5000    # 连接超时时间 (毫秒)
+    database: 0    # Redis 默认索引为 0 的数据库
+
+server:
+  port: 8080
+
+logging:
+  level.org.springframework.web: DEBUG
+  file:
+    name: ../logs/spring-boot-my-system.log
+
+#shiro的配置
+shiro:
+  hash-algorithm-name: md5
+  hash-iterations: 2
+  anon-urls:
+    - /index.html*
+    - /sys/toLogin*
+    - /login/login*
+    - /resources/**
+  login-url: /index.html
+  log-out-url: /login/logout
+  authc-ulrs:
+    - /**
+
+
+mybatis-plus:
+  mapper-locations:  classpath*:mapper/**/*Mapper.xml
+  global-config:
+    db-config:
+      id-type: auto
+    banner: true
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
